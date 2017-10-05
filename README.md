@@ -1,2 +1,3 @@
-# d3
-Resources used to learn d3 and associates technologies
+## Contents
+
+- [Scott Murray Tutorial](http://alignedleft.com/tutorials/d3/about)

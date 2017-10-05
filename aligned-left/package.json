@@ -1,0 +1,25 @@
+{
+  "name": "d3-tutorial",
+  "version": "1.0.0",
+  "description": "From Scott Murray",
+  "main": "none",
+  "scripts": {
+    "start" : "browser-sync start --directory --server --files 'src/css/*.css, src/*.html, src/*.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usyyy/d3.git"
+  },
+  "keywords": [
+    "d3"
+  ],
+  "author": "Usmaan Ali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/usyyy/d3/issues"
+  },
+  "homepage": "https://github.com/usyyy/d3#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.13"
+  }
+}
