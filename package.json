@@ -4,7 +4,7 @@
   "description": "From Scott Murray",
   "main": "none",
   "scripts": {
-    "start" : "browser-sync start --directory --server --files 'src/css/*.css, src/*.html, src/*.js'"
+    "start" : "browser-sync start --directory --server --files='**/*'"
   },
   "repository": {
     "type": "git",
