@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import * as d3 from 'd3';
 
 class ProgressArc extends Component {
-
   displayName: 'ProgressArc';
 
   propTypes: {
@@ -15,13 +14,30 @@ class ProgressArc extends Component {
     foregroundColor: PropTypes.string,
     percentComplete: PropTypes.number
   }
-  componentDidMount() {
-    const context = this.setContext();
-    this.setBackground(context)
-    this.setForeground(context);
-  }
 
   tau = Math.PI * 2;
+
+  componentDidMount() {
+    this.drawArc();
+  }
+
+  componentDidUpdate() {
+    this.redrawArc();
+  }
+
+  drawArc() {
+    const context = this.setContext();
+    this.setBackground(context);
+    this.setForeground(context);
+    this.updatePercent(context);
+  }
+
+  redrawArc() {
+    const { id } = this.props;
+    const context = d3.select(`#${id}`);
+    context.remove();
+    this.drawArc();
+  }
 
   arc() {
     const { innerRadius, outerRadius } = this.props;
@@ -29,6 +45,17 @@ class ProgressArc extends Component {
       .innerRadius(innerRadius)
       .outerRadius(outerRadius)
       .startAngle(0)
+  }
+
+  arcTween(transition, newAngle, arc) {
+    transition.attrTween('d', d => {
+      const interpolate = d3.interpolate(d.endAngle, newAngle);
+      const newArc = d;
+      return (t) => {
+        newArc.endAngle = interpolate(t);
+        return arc(newArc);
+      };
+    });
   }
 
   setContext() {
@@ -53,14 +80,22 @@ class ProgressArc extends Component {
   setForeground(context) {
     const { foregroundColor, percentComplete } = this.props;
     return context.append('path')
-      .datum({ endAngle: this.tau * percentComplete })
+      .datum({ endAngle: 0 })
       .style('fill', foregroundColor)
       .attr('d', this.arc());
   }
 
+  updatePercent(context) {
+    const { duration, percentComplete } = this.props;
+    return this.setForeground(context)
+      .transition()
+      .duration(duration)
+      .call(this.arcTween, this.tau * percentComplete, this.arc())
+  }
+
   render() {
       return (
-          <div ref="arc"></div>
+        <div ref="arc"></div>
       );
   }
 }
